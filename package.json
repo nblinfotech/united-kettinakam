@@ -9,14 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "framer-motion": "^11.3.19",
+    "lucide-react": "^1.14.0",
+    "mongoose": "^8.5.1",
     "next": "14.2.5",
+    "nodemailer": "^6.9.14",
     "react": "^18",
     "react-dom": "^18",
-    "mongoose": "^8.5.1",
-    "nodemailer": "^6.9.14",
     "react-hot-toast": "^2.4.1",
-    "react-icons": "^5.2.1",
-    "framer-motion": "^11.3.19"
+    "react-icons": "^5.2.1"
   },
   "devDependencies": {
     "@types/node": "^20",

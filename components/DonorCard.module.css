@@ -32,7 +32,10 @@
   flex-shrink: 0;
 }
 
-.info { flex: 1; min-width: 0; }
+.info {
+  flex: 1;
+  min-width: 0;
+}
 
 .name {
   font-family: 'Rajdhani', sans-serif;
@@ -65,5 +68,36 @@
   flex-shrink: 0;
 }
 
-.yes { background: rgba(26, 140, 58, 0.2); color: #44CC66; }
-.no { background: rgba(255, 255, 255, 0.05); color: #555; }
+.yes {
+  background: rgba(26, 140, 58, 0.2);
+  color: #44CC66;
+}
+
+.no {
+  background: rgba(255, 255, 255, 0.05);
+  color: #555;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.callBtn {
+  width: 40px;
+  height: 40px;
+  background: #16a34a;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.callBtn:hover {
+  transform: scale(1.1);
+  background: #15803d;
+}
