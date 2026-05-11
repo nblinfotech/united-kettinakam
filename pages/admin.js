@@ -282,6 +282,38 @@ function EditDonorModal({ donor, adminKey, onClose, onSaved }) {
   );
 }
 
+const getEligibility = (lastDonation) => {
+  if (!lastDonation) {
+    return {
+      eligible: true,
+      text: 'Eligible Now',
+    };
+  }
+
+  const lastDate = new Date(lastDonation);
+  const nextEligible = new Date(lastDate);
+
+  // 90 days gap
+  nextEligible.setDate(nextEligible.getDate() + 90);
+
+  const today = new Date();
+
+  const diffTime = nextEligible - today;
+  const remainingDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  if (remainingDays <= 0) {
+    return {
+      eligible: true,
+      text: 'Eligible Now',
+    };
+  }
+
+  return {
+    eligible: false,
+    text: `${remainingDays} days left`,
+  };
+};
+
 function AllDonors({ adminKey, showToast }) {
   const [donors, setDonors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -347,7 +379,7 @@ function AllDonors({ adminKey, showToast }) {
         <div style={{ overflowX: 'auto', borderRadius: 4, border: '1px solid rgba(245,200,0,0.08)' }}>
           <table style={c.table}>
             <thead style={{ background: '#111' }}>
-              <tr>{['Name', 'Blood', 'Location', 'Phone', 'Verified', 'Available', 'Actions'].map(h => <th key={h} style={c.th}>{h}</th>)}</tr>
+              <tr>{['Name', 'Blood', 'Location', 'Phone', 'Eligibility', 'Verified', 'Available', 'Actions'].map(h => <th key={h} style={c.th}>{h}</th>)}</tr>
             </thead>
             <tbody>
               {filtered.map(d => (
@@ -356,6 +388,23 @@ function AllDonors({ adminKey, showToast }) {
                   <td style={c.td}><span style={c.bloodBadge}>{d.bloodGroup}</span></td>
                   <td style={c.td}><span style={{ color: '#888', fontSize: '0.82rem' }}>{d.location}</span></td>
                   <td style={c.td}><span style={{ fontFamily: 'monospace', fontSize: '0.78rem', color: '#666' }}>{d.phone}</span></td>
+                  <td style={c.td}>
+                    {(() => {
+                      const eligibility = getEligibility(d.lastDonation);
+
+                      return (
+                        <span
+                          style={
+                            eligibility.eligible
+                              ? c.badgeGreen
+                              : c.badgeGold
+                          }
+                        >
+                          {eligibility.text}
+                        </span>
+                      );
+                    })()}
+                  </td>
                   <td style={c.td}><span style={d.verified ? c.badgeGreen : c.badgeGold}>{d.verified ? 'Yes' : 'Pending'}</span></td>
                   <td style={c.td}><span style={d.available ? c.badgeGreen : c.badgeGray}>{d.available ? 'Yes' : 'No'}</span></td>
                   <td style={c.td}>
@@ -372,7 +421,7 @@ function AllDonors({ adminKey, showToast }) {
                           )
                         }
                       >
-                        🏆 Certificate
+                        🏅
                       </button>
                       <button style={c.btnSmRed} onClick={() => remove(d)} title="Delete">✕</button>
                     </div>

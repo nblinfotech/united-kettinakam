@@ -101,3 +101,22 @@
   transform: scale(1.1);
   background: #15803d;
 }
+
+.recovery {
+  margin-top: 6px;
+}
+
+.eligible {
+  color: #28c76f;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.waiting {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #ffb020;
+  font-size: 12px;
+  font-weight: 600;
+}

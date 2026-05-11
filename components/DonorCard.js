@@ -1,7 +1,24 @@
 import styles from './DonorCard.module.css';
-import { Phone } from 'lucide-react';
+import { Phone, Clock3 } from 'lucide-react';
 
 export default function DonorCard({ donor, onClick }) {
+
+  const getRemainingDays = () => {
+    if (!donor.lastDonation) return 0;
+
+    const last = new Date(donor.lastDonation);
+    const today = new Date();
+
+    const diffDays = Math.floor(
+      (today - last) / (1000 * 60 * 60 * 24)
+    );
+
+    return Math.max(0, 90 - diffDays);
+  };
+
+  const remainingDays = getRemainingDays();
+  const eligible = remainingDays === 0;
+
   return (
     <div className={styles.card} onClick={onClick}>
 
@@ -10,10 +27,28 @@ export default function DonorCard({ donor, onClick }) {
       </div>
 
       <div className={styles.info}>
-        <div className={styles.name}>{donor.name}</div>
+        <div className={styles.name}>
+          {donor.name}
+        </div>
 
         <div className={styles.meta}>
           Age {donor.age} · {donor.gender} · {donor.location}
+        </div>
+
+        {/* Recovery / Eligibility */}
+        <div className={styles.recovery}>
+
+          {eligible ? (
+            <span className={styles.eligible}>
+              Eligible to Donate
+            </span>
+          ) : (
+            <span className={styles.waiting}>
+              <Clock3 size={14} />
+              {remainingDays} days remaining
+            </span>
+          )}
+
         </div>
       </div>
 
@@ -28,7 +63,7 @@ export default function DonorCard({ donor, onClick }) {
           <Phone size={16} />
         </a>
 
-        {/* Availability Status */}
+        {/* Availability */}
         <div
           className={`${styles.status} ${donor.available ? styles.yes : styles.no
             }`}
