@@ -1,0 +1,129 @@
+.about {
+  padding: 100px 5%;
+  background:
+    linear-gradient(135deg, rgba(26, 140, 58, 0.05) 0%, transparent 50%),
+    linear-gradient(225deg, rgba(204, 34, 0, 0.05) 0%, transparent 50%),
+    var(--card-bg);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.imgSide { position: relative; }
+
+.imgFrame {
+  position: relative;
+  display: inline-block;
+}
+
+.imgFrame::before {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+.img {
+  width: 100%;
+  max-width: 360px;
+  border-radius: 4px;
+  filter: drop-shadow(0 20px 60px rgba(245, 200, 0, 0.2));
+  position: relative;
+  z-index: 1;
+  object-fit: cover;
+}
+
+.badge {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  background: var(--gold);
+  color: var(--black);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  padding: 14px 20px;
+  border-radius: 2px;
+  z-index: 2;
+  line-height: 1.4;
+}
+
+.label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 5px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.4rem, 4vw, 3.5rem);
+  letter-spacing: 3px;
+  line-height: 1;
+  margin-bottom: 20px;
+  color: var(--white);
+}
+
+.title span { color: var(--gold); }
+
+.divider {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--red), var(--gold), var(--green));
+  margin-bottom: 28px;
+}
+
+.text p {
+  color: #bbb;
+  line-height: 1.9;
+  font-size: 0.95rem;
+  margin-bottom: 18px;
+}
+
+.text p strong { color: var(--gold); }
+
+.values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.tag {
+  padding: 8px 18px;
+  border: 1px solid var(--border);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  border-radius: 2px;
+  background: rgba(245, 200, 0, 0.05);
+  transition: all 0.3s;
+  cursor: default;
+}
+
+.tag:hover {
+  background: var(--gold);
+  color: var(--black);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+  .imgSide { text-align: center; }
+}

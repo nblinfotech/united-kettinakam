@@ -1,0 +1,45 @@
+:root {
+  --gold: #F5C800;
+  --black: #111111;
+  --red: #CC2200;
+  --green: #1A8C3A;
+  --white: #FAFAFA;
+  --dark-bg: #0D0D0D;
+  --card-bg: #1A1A1A;
+  --border: rgba(245, 200, 0, 0.2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--dark-bg);
+  color: var(--white);
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; }
+
+.section-wrapper {
+  padding: 100px 5%;
+}
+
+@media (max-width: 768px) {
+  .section-wrapper {
+    padding: 70px 5%;
+  }
+}

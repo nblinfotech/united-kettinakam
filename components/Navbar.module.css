@@ -1,0 +1,129 @@
+.nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(13, 13, 13, 0.85);
+  backdrop-filter: blur(14px);
+  border-bottom: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  height: 70px;
+  transition: background 0.3s;
+}
+
+.scrolled {
+  background: rgba(13, 13, 13, 0.98);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.logoImg {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.logoName {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  color: var(--gold);
+  display: block;
+  line-height: 1.1;
+}
+
+.logoTagline {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.52rem;
+  letter-spacing: 4px;
+  color: #aaa;
+  text-transform: uppercase;
+  display: block;
+}
+
+.links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+
+.link {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--white);
+  background: none;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 0.3s;
+}
+
+.link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--gold);
+  transition: width 0.3s;
+}
+
+.link:hover { color: var(--gold); }
+.link:hover::after { width: 100%; }
+
+.blood { color: #FF4444 !important; }
+.blood::after { background: #FF4444 !important; }
+.blood:hover { color: #FF6666 !important; }
+
+.toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.bar1, .bar2, .bar3 {
+  display: block;
+  width: 25px;
+  height: 2px;
+  background: var(--gold);
+  transition: 0.3s;
+}
+
+.bar1open { transform: rotate(45deg) translate(5px, 5px); background: var(--gold); display: block; width: 25px; height: 2px; transition: 0.3s; }
+.bar2open { opacity: 0; display: block; width: 25px; height: 2px; background: var(--gold); transition: 0.3s; }
+.bar3open { transform: rotate(-45deg) translate(5px, -5px); background: var(--gold); display: block; width: 25px; height: 2px; transition: 0.3s; }
+
+@media (max-width: 768px) {
+  .toggle { display: flex; }
+
+  .links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: rgba(13, 13, 13, 0.98);
+    border-bottom: 1px solid var(--gold);
+    padding: 20px 5%;
+    gap: 20px;
+  }
+
+  .links.open { display: flex; }
+}
