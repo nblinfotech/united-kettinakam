@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 
       let donors = await Donor.find(query)
         .select('-email -verificationToken -__v')
-        .sort({ createdAt: -1 });
+        .sort({ name: 1 });
 
       if (search) {
         const s = search.toLowerCase();

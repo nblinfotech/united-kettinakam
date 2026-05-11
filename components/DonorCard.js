@@ -25,7 +25,7 @@ export default function DonorCard({ donor, onClick }) {
           className={styles.callBtn}
           onClick={(e) => e.stopPropagation()}
         >
-          <Phone size={18} />
+          <Phone size={16} />
         </a>
 
         {/* Availability Status */}
