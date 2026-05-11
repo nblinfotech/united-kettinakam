@@ -10,7 +10,7 @@ export default function About() {
         <div className={styles.imgSide}>
           <div className={styles.imgFrame}>
             <Image src="/logo.png" alt="United Kettinakam" width={360} height={360} className={styles.img} />
-            <div className={styles.badge}>EST. 2020<br />Kettinakam</div>
+            <div className={styles.badge}>EST. 2013<br />Kettinakam</div>
           </div>
         </div>
         <div className={styles.text}>
