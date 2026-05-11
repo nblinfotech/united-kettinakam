@@ -2,6 +2,19 @@ import { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import NikahMomento from '../components/NikahMomento';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Legend,
+} from 'recharts';
 
 const BLOOD_GROUPS = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 const EVENT_COLORS = ['gold', 'red', 'green'];
@@ -113,38 +126,327 @@ function LoginScreen({ onLogin }) {
 }
 
 function Overview({ adminKey }) {
-  const [stats, setStats] = useState({ total: 0, available: 0, groups: 0, pending: 0, events: 0 });
+  const [stats, setStats] = useState({
+    total: 0,
+    available: 0,
+    groups: 0,
+    pending: 0,
+    events: 0,
+  });
+
+  const [bloodData, setBloodData] = useState([]);
+  const [recentDonors, setRecentDonors] = useState([]);
+
   useEffect(() => {
     Promise.all([
       fetch('/api/donors/stats').then(r => r.json()),
-      fetch('/api/donors/pending', { headers: { 'x-admin-key': adminKey } }).then(r => r.json()),
+      fetch('/api/donors/pending', {
+        headers: { 'x-admin-key': adminKey },
+      }).then(r => r.json()),
       fetch('/api/events').then(r => r.json()),
-    ]).then(([s, p, e]) => setStats({ total: s.stats?.total || 0, available: s.stats?.available || 0, groups: s.stats?.groups || 0, pending: p.donors?.length || 0, events: e.events?.length || 0 }));
+      fetch('/api/admin/donors', {
+        headers: { 'x-admin-key': adminKey },
+      }).then(r => r.json()),
+    ]).then(([s, p, e, d]) => {
+      const donors = d.donors || [];
+
+      setStats({
+        total: s.stats?.total || 0,
+        available: s.stats?.available || 0,
+        groups: s.stats?.groups || 0,
+        pending: p.donors?.length || 0,
+        events: e.events?.length || 0,
+      });
+
+      const grouped = BLOOD_GROUPS.map(group => ({
+        name: group,
+        value: donors.filter(x => x.bloodGroup === group).length,
+      }));
+
+      setBloodData(grouped);
+
+      setRecentDonors(
+        donors
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt) - new Date(a.createdAt)
+          )
+          .slice(0, 5)
+      );
+    });
   }, [adminKey]);
-  const cards = [
-    { num: stats.total, label: 'Total Donors', color: '#FF4444' },
-    { num: stats.available, label: 'Available Now', color: '#44CC66' },
-    { num: stats.pending, label: 'Pending Approval', color: '#F5C800' },
-    { num: stats.events, label: 'Total Events', color: '#4488FF' },
+
+  const COLORS = [
+    '#F5C800',
+    '#FF4444',
+    '#44CC66',
+    '#4488FF',
+    '#AA66FF',
+    '#FF8844',
+    '#00C2FF',
+    '#FF66AA',
   ];
+
+  const availabilityData = [
+    {
+      name: 'Available',
+      value: stats.available,
+    },
+    {
+      name: 'Unavailable',
+      value: stats.total - stats.available,
+    },
+  ];
+
+  const cards = [
+    {
+      num: stats.total,
+      label: 'Total Donors',
+      color: '#FF4444',
+    },
+    {
+      num: stats.available,
+      label: 'Available',
+      color: '#44CC66',
+    },
+    {
+      num: stats.pending,
+      label: 'Pending',
+      color: '#F5C800',
+    },
+    {
+      num: stats.events,
+      label: 'Events',
+      color: '#4488FF',
+    },
+  ];
+
   return (
     <div>
-      <div style={{ ...c.flexBetween, marginBottom: 28 }}><div style={c.pageTitle}>Dashboard</div></div>
-      <div style={{ display: 'flex', gap: 16, marginBottom: 32, flexWrap: 'wrap' }}>
+      <div style={{ marginBottom: 28 }}>
+        <div style={c.pageTitle}>Dashboard Analytics</div>
+      </div>
+
+      {/* STAT CARDS */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns:
+            'repeat(auto-fit,minmax(220px,1fr))',
+          gap: 18,
+          marginBottom: 28,
+        }}
+      >
         {cards.map(card => (
-          <div key={card.label} style={c.statCard}>
-            <div style={{ ...c.statNum, color: card.color }}>{card.num}</div>
-            <div style={c.statLabel}>{card.label}</div>
+          <div
+            key={card.label}
+            style={{
+              background:
+                'linear-gradient(145deg,#1A1A1A,#111)',
+              border:
+                '1px solid rgba(245,200,0,0.12)',
+              borderRadius: 10,
+              padding: 24,
+              position: 'relative',
+              overflow: 'hidden',
+            }}
+          >
+            <div
+              style={{
+                position: 'absolute',
+                right: -20,
+                top: -20,
+                width: 80,
+                height: 80,
+                borderRadius: '50%',
+                background: `${card.color}22`,
+              }}
+            />
+
+            <div
+              style={{
+                fontFamily: "'Bebas Neue'",
+                fontSize: '3rem',
+                color: card.color,
+                lineHeight: 1,
+              }}
+            >
+              {card.num}
+            </div>
+
+            <div
+              style={{
+                color: '#777',
+                letterSpacing: 2,
+                marginTop: 8,
+                textTransform: 'uppercase',
+                fontSize: '0.8rem',
+              }}
+            >
+              {card.label}
+            </div>
           </div>
         ))}
       </div>
+
+      {/* CHARTS */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 20,
+          marginBottom: 28,
+        }}
+      >
+        {/* BLOOD GROUP CHART */}
+        <div style={c.card}>
+          <div
+            style={{
+              marginBottom: 20,
+              color: '#F5C800',
+              fontWeight: 700,
+              letterSpacing: 2,
+            }}
+          >
+            Blood Group Distribution
+          </div>
+
+          <div style={{ width: '100%', height: 300 }}>
+            <ResponsiveContainer>
+              <PieChart>
+                <Pie
+                  data={bloodData}
+                  dataKey="value"
+                  nameKey="name"
+                  outerRadius={100}
+                  label
+                >
+                  {bloodData.map((entry, index) => (
+                    <Cell
+                      key={index}
+                      fill={
+                        COLORS[index % COLORS.length]
+                      }
+                    />
+                  ))}
+                </Pie>
+
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* AVAILABILITY */}
+        <div style={c.card}>
+          <div
+            style={{
+              marginBottom: 20,
+              color: '#F5C800',
+              fontWeight: 700,
+              letterSpacing: 2,
+            }}
+          >
+            Donor Availability
+          </div>
+
+          <div style={{ width: '100%', height: 300 }}>
+            <ResponsiveContainer>
+              <BarChart data={availabilityData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" stroke="#777" />
+                <YAxis stroke="#777" />
+                <Tooltip />
+                <Legend />
+
+                <Bar
+                  dataKey="value"
+                  radius={[6, 6, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+
+      {/* RECENT DONORS */}
       <div style={c.card}>
-        <div style={{ fontFamily: "'Rajdhani', sans-serif", fontWeight: 700, fontSize: '0.85rem', letterSpacing: 3, color: '#F5C800', textTransform: 'uppercase', marginBottom: 14 }}>Quick Guide</div>
-        <div style={{ color: '#888', fontSize: '0.88rem', lineHeight: 2 }}>
-          • <strong style={{ color: '#FAFAFA' }}>Pending Approval</strong> → Review & verify new donor registrations from the website<br />
-          • <strong style={{ color: '#FAFAFA' }}>All Donors</strong> → Edit, toggle availability, publish/unpublish, or delete any donor<br />
-          • <strong style={{ color: '#FAFAFA' }}>Add Donor</strong> → Manually add a trusted donor — instantly verified and live<br />
-          • <strong style={{ color: '#FAFAFA' }}>Manage Events</strong> → Create, edit, or delete club events shown on the website
+        <div
+          style={{
+            marginBottom: 20,
+            color: '#F5C800',
+            fontWeight: 700,
+            letterSpacing: 2,
+          }}
+        >
+          Recent Registrations
+        </div>
+
+        <div
+          style={{
+            display: 'grid',
+            gap: 12,
+          }}
+        >
+          {recentDonors.map(donor => (
+            <div
+              key={donor._id}
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '12px 16px',
+                background: '#111',
+                borderRadius: 6,
+                border:
+                  '1px solid rgba(255,255,255,0.05)',
+              }}
+            >
+              <div>
+                <div
+                  style={{
+                    color: '#FAFAFA',
+                    fontWeight: 500,
+                  }}
+                >
+                  {donor.name}
+                </div>
+
+                <div
+                  style={{
+                    color: '#666',
+                    fontSize: '0.8rem',
+                  }}
+                >
+                  {donor.location}
+                </div>
+              </div>
+
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                }}
+              >
+                <span style={c.bloodBadge}>
+                  {donor.bloodGroup}
+                </span>
+
+                <span
+                  style={
+                    donor.available
+                      ? c.badgeGreen
+                      : c.badgeGray
+                  }
+                >
+                  {donor.available
+                    ? 'Available'
+                    : 'Unavailable'}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

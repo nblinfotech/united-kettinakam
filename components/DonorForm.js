@@ -15,12 +15,10 @@ export default function DonorForm({ onSuccess }) {
   const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
 
   const validate = () => {
-    if (!form.name || !form.age || !form.bloodGroup || !form.phone || !form.email || !form.location)
+    if (!form.name || !form.age || !form.bloodGroup || !form.phone || !form.location)
       return 'Please fill in all required fields.';
     if (parseInt(form.age) < 18 || parseInt(form.age) > 65)
       return 'Age must be between 18 and 65.';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      return 'Please enter a valid email address.';
     if (!consent)
       return 'Please accept the consent agreement.';
     return null;
@@ -72,7 +70,7 @@ export default function DonorForm({ onSuccess }) {
             <label>Blood Group *</label>
             <select value={form.bloodGroup} onChange={set('bloodGroup')}>
               <option value="">Select blood group</option>
-              {['A+','A-','B+','B-','AB+','AB-','O+','O-'].map(g => (
+              {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map(g => (
                 <option key={g} value={g}>{g}</option>
               ))}
             </select>
@@ -93,7 +91,7 @@ export default function DonorForm({ onSuccess }) {
             <input value={form.phone} onChange={set('phone')} placeholder="+91 XXXXX XXXXX" />
           </div>
           <div className={styles.group}>
-            <label>Email Address *</label>
+            <label>Email Address</label>
             <input type="email" value={form.email} onChange={set('email')} placeholder="your@email.com" />
           </div>
         </div>
