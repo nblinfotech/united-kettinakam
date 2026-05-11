@@ -16,7 +16,7 @@ export default function Footer() {
         <div>
           <div className={styles.title}>Quick Links</div>
           <ul className={styles.links}>
-            {[['#home','Home'],['#about','About Us'],['#events','Events'],['#blood','Blood Donation']].map(([href, label]) => (
+            {[['#home', 'Home'], ['#about', 'About Us'], ['#events', 'Events'], ['#blood', 'Blood Donation']].map(([href, label]) => (
               <li key={href}><button onClick={() => scrollTo(href)}>{label}</button></li>
             ))}
           </ul>
@@ -26,8 +26,8 @@ export default function Footer() {
           <ul className={styles.links}>
             <li><span>📍 Kettinakam, India</span></li>
             <li><a href="mailto:info@unitedkettinakam.com">📧 info@unitedkettinakam.com</a></li>
-            <li><a href="#">📱 Instagram</a></li>
-            <li><a href="#">📘 Facebook</a></li>
+            <li><a href="https://www.instagram.com/united_kettinakam?igsh=MXJxYTk1OXdiNG93OQ==">📱 Instagram</a></li>
+            <li><a href="https://www.facebook.com/share/1AzWWtgjEY/">📘 Facebook</a></li>
           </ul>
         </div>
       </div>
