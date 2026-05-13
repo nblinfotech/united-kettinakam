@@ -416,7 +416,6 @@ export default function DonationCertificateForm({
                         <input
                             type="file"
                             accept="image/*"
-                            capture="environment"
                             onChange={(e) =>
                                 setProofImage(e.target.files[0])
                             }
