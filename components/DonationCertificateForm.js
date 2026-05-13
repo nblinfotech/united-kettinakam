@@ -407,25 +407,48 @@ export default function DonationCertificateForm({
                     </div>
 
                     {/* IMAGE */}
+                    {/* IMAGE */}
                     <div className={styles.group}>
-
                         <label>
                             Upload Donation Proof *
                         </label>
 
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) =>
-                                setProofImage(e.target.files[0])
-                            }
-                        />
+                        <div className={styles.uploadActions}>
+                            <label className={styles.uploadBtn}>
+                                📷 Capture Photo
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    capture="environment"
+                                    onChange={(e) =>
+                                        setProofImage(e.target.files[0])
+                                    }
+                                    hidden
+                                />
+                            </label>
 
-                        <div className={styles.uploadNote}>
-                            Upload hospital slip,
-                            donor card or blood bank receipt.
+                            <label className={styles.uploadBtn}>
+                                🖼 Select from Gallery
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) =>
+                                        setProofImage(e.target.files[0])
+                                    }
+                                    hidden
+                                />
+                            </label>
                         </div>
 
+                        {proofImage && (
+                            <div className={styles.selectedFile}>
+                                Selected: {proofImage.name}
+                            </div>
+                        )}
+
+                        <div className={styles.uploadNote}>
+                            Upload hospital slip, donor card or blood bank receipt.
+                        </div>
                     </div>
 
                     <div className={styles.note}>
