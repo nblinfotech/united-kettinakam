@@ -4,6 +4,7 @@ import DonorCard from './DonorCard';
 import DonorModal from './DonorModal';
 import DonorForm from './DonorForm';
 import styles from './BloodDonation.module.css';
+import DonationCertificateForm from './DonationCertificateForm';
 
 const BLOOD_GROUPS = ['All', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 
@@ -14,6 +15,45 @@ export default function BloodDonation() {
   const [search, setSearch] = useState('');
   const [activeGroup, setActiveGroup] = useState('All');
   const [selected, setSelected] = useState(null);
+  const [selectedDonor, setSelectedDonor] = useState(null);
+
+  const [results, setResults] = useState([]);
+
+  const [proofImage, setProofImage] = useState(null);
+
+  const [showCertificateForm, setShowCertificateForm] = useState(false);
+
+  const [form, setForm] = useState({
+    donationDate: '',
+    hospital: '',
+    patientName: '',
+    units: '',
+    remarks: '',
+  });
+
+  const searchDonors = async (value) => {
+    setSearch(value);
+
+    if (value.length < 2) {
+      setResults([]);
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `/api/donors/search?q=${value}`
+      );
+
+      const data = await res.json();
+
+      if (data.success) {
+        setResults(data.donors);
+      }
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const fetchDonors = useCallback(async () => {
     setLoading(true);
@@ -36,7 +76,7 @@ export default function BloodDonation() {
       const res = await fetch('/api/donors/stats');
       const data = await res.json();
       if (data.success) setStats(data.stats);
-    } catch {}
+    } catch { }
   };
 
   useEffect(() => { fetchStats(); }, []);
@@ -77,6 +117,8 @@ export default function BloodDonation() {
         ))}
       </div>
 
+
+
       <div className={styles.main}>
         {/* Donor List Panel */}
         <div className={styles.listPanel}>
@@ -115,12 +157,79 @@ export default function BloodDonation() {
           </div>
         </div>
 
+
+
         {/* Registration Form */}
         <DonorForm onSuccess={onRegistered} />
       </div>
 
+      <div className={styles.certificateHero}>
+
+        <div className={styles.certificateGlow}></div>
+
+        <div className={styles.certificateLeft}>
+          <div className={styles.certificateBadge}>
+            DONOR APPRECIATION
+          </div>
+
+          <h3 className={styles.certificateTitle}>
+            Already Donated Blood?
+          </h3>
+
+          <p className={styles.certificateText}>
+            If you have already donated blood through a hospital,
+            emergency request, or blood donation camp, you can now
+            submit your donation details and receive an official
+            appreciation certificate from United Kettinakam.
+          </p>
+
+          <div className={styles.certificateFeatures}>
+            <span>✓ Digital Certificate</span>
+            <span>✓ Community Recognition</span>
+            <span>✓ Donation Record</span>
+            <span>✓ Inspire More Donors</span>
+          </div>
+        </div>
+
+        <div className={styles.certificateRight}>
+
+          <div className={styles.certificateCard}>
+            <div className={styles.certIcon}>🩸</div>
+
+            <div className={styles.certHeading}>
+              Every Donation Saves Lives
+            </div>
+
+            <div className={styles.certSub}>
+              Submit your donation proof and
+              receive your appreciation certificate.
+            </div>
+
+            <button
+              className={styles.certificateBtn}
+              onClick={() => setShowCertificateForm(true)}
+            >
+              Submit Donation Details
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
       {selected && (
         <DonorModal donor={selected} onClose={() => setSelected(null)} />
+      )}
+
+      {showCertificateForm && (
+
+        <DonationCertificateForm
+          onClose={() => setShowCertificateForm(false)}
+          onSuccess={() => {
+            toast.success('Donation submitted successfully');
+            setShowCertificateForm(false);
+          }}
+        />
       )}
     </section>
   );

@@ -1,122 +1,201 @@
 .card {
-  background: var(--dark-bg);
-  border: 1px solid rgba(255, 68, 68, 0.15);
-  border-radius: 4px;
-  padding: 16px 20px;
+  width: 100%;
+
   display: flex;
   align-items: center;
+  justify-content: space-between;
+
   gap: 16px;
-  transition: all 0.3s;
+
+  padding: 18px;
+
+  background:
+    linear-gradient(135deg,
+      rgba(20, 20, 20, 0.98),
+      rgba(10, 10, 10, 1));
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  border-radius: 18px;
+
+  transition: 0.25s ease;
+
   cursor: pointer;
+
+  box-sizing: border-box;
 }
 
 .card:hover {
-  border-color: rgba(255, 68, 68, 0.5);
-  background: rgba(204, 34, 0, 0.06);
-  transform: translateX(4px);
+  transform: translateY(-2px);
+
+  border-color: rgba(255, 0, 0, 0.25);
+
+  box-shadow:
+    0 10px 30px rgba(255, 0, 0, 0.08);
 }
 
-.badge {
-  min-width: 50px;
-  height: 50px;
-  background: linear-gradient(135deg, var(--red), #FF4444);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 0.95rem;
-  color: var(--white);
-  letter-spacing: 1px;
-  box-shadow: 0 4px 16px rgba(204, 34, 0, 0.3);
-  flex-shrink: 0;
-}
-
-.info {
+.left {
   flex: 1;
   min-width: 0;
 }
 
-.name {
-  font-family: 'Rajdhani', sans-serif;
-  font-weight: 700;
-  font-size: 1rem;
-  color: var(--white);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 8px;
+
+  min-width: 0;
 }
 
-.meta {
-  font-size: 0.75rem;
-  color: #888;
-  margin-top: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+.badge {
+  padding: 7px 12px;
 
-.status {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 2px;
-  white-space: nowrap;
+  border-radius: 999px;
+
+  background:
+    linear-gradient(135deg,
+      #ff3434,
+      #c40000);
+
+  color: white;
+
+  font-size: 0.78rem;
+  font-weight: 800;
+
+  letter-spacing: 0.5px;
+
   flex-shrink: 0;
 }
 
-.yes {
-  background: rgba(26, 140, 58, 0.2);
-  color: #44CC66;
-}
-
-.no {
-  background: rgba(255, 255, 255, 0.05);
-  color: #555;
-}
-
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.callBtn {
-  width: 40px;
-  height: 40px;
-  background: #16a34a;
+.name {
   color: white;
-  border-radius: 50%;
-  display: flex;
+
+  font-size: 1.02rem;
+  font-weight: 700;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meta {
+  color: #9a9a9a;
+
+  font-size: 0.84rem;
+
+  line-height: 1.5;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bottom {
+  margin-top: 10px;
+}
+
+.eligible,
+.waiting {
+  width: fit-content;
+
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  transition: 0.3s ease;
-}
+  gap: 5px;
 
-.callBtn:hover {
-  transform: scale(1.1);
-  background: #15803d;
-}
+  padding: 6px 10px;
 
-.recovery {
-  margin-top: 6px;
+  border-radius: 999px;
+
+  font-size: 0.72rem;
+  font-weight: 700;
 }
 
 .eligible {
-  color: #28c76f;
-  font-size: 12px;
-  font-weight: 600;
+  background: rgba(0, 210, 106, 0.12);
+  color: #00d26a;
 }
 
 .waiting {
+  background: rgba(255, 176, 32, 0.12);
+  color: #ffb020;
+}
+
+.callBtn {
+  width: 50px;
+  height: 50px;
+
+  min-width: 50px;
+
+  border-radius: 14px;
+
+  background: #16a34a;
+
+  color: white;
+
   display: flex;
   align-items: center;
-  gap: 5px;
-  color: #ffb020;
-  font-size: 12px;
-  font-weight: 600;
+  justify-content: center;
+
+  text-decoration: none;
+
+  transition: 0.2s ease;
+
+  flex-shrink: 0;
+}
+
+.callBtn:hover {
+  transform: scale(1.05);
+
+  background: #15803d;
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  .card {
+    padding: 14px;
+
+    gap: 12px;
+
+    border-radius: 16px;
+  }
+
+  .top {
+    gap: 10px;
+  }
+
+  .badge {
+    padding: 6px 10px;
+
+    font-size: 0.7rem;
+  }
+
+  .name {
+    font-size: 0.92rem;
+  }
+
+  .meta {
+    font-size: 0.72rem;
+
+    white-space: normal;
+  }
+
+  .eligible,
+  .waiting {
+    font-size: 0.66rem;
+
+    padding: 5px 8px;
+  }
+
+  .callBtn {
+    width: 44px;
+    height: 44px;
+
+    min-width: 44px;
+
+    border-radius: 12px;
+  }
 }

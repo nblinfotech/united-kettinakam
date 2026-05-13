@@ -22,56 +22,49 @@ export default function DonorCard({ donor, onClick }) {
   return (
     <div className={styles.card} onClick={onClick}>
 
-      <div className={styles.badge}>
-        {donor.bloodGroup}
-      </div>
+      <div className={styles.left}>
 
-      <div className={styles.info}>
-        <div className={styles.name}>
-          {donor.name}
+        <div className={styles.top}>
+
+          <div className={styles.badge}>
+            {donor.bloodGroup}
+          </div>
+
+          <div className={styles.name}>
+            {donor.name}
+          </div>
+
         </div>
 
         <div className={styles.meta}>
-          Age {donor.age} · {donor.gender} · {donor.location}
+          {donor.age} Years • {donor.gender} • {donor.location}
         </div>
 
-        {/* Recovery / Eligibility */}
-        <div className={styles.recovery}>
+        <div className={styles.bottom}>
 
           {eligible ? (
-            <span className={styles.eligible}>
+            <div className={styles.eligible}>
               Eligible to Donate
-            </span>
+            </div>
           ) : (
-            <span className={styles.waiting}>
-              <Clock3 size={14} />
+            <div className={styles.waiting}>
+              <Clock3 size={13} />
               {remainingDays} days remaining
-            </span>
+            </div>
           )}
 
         </div>
-      </div>
-
-      <div className={styles.actions}>
-
-        {/* Call Button */}
-        <a
-          href={`tel:${donor.phone}`}
-          className={styles.callBtn}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <Phone size={16} />
-        </a>
-
-        {/* Availability */}
-        <div
-          className={`${styles.status} ${donor.available ? styles.yes : styles.no
-            }`}
-        >
-          {donor.available ? 'Available' : 'Unavailable'}
-        </div>
 
       </div>
+
+      <a
+        href={`tel:${donor.phone}`}
+        className={styles.callBtn}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <Phone size={18} />
+      </a>
+
     </div>
   );
 }
