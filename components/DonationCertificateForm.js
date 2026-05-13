@@ -415,7 +415,7 @@ export default function DonationCertificateForm({
 
                         <div className={styles.uploadActions}>
                             <label className={styles.uploadBtn}>
-                                📷 Capture Photo
+                                Capture Photo
                                 <input
                                     type="file"
                                     accept="image/*"
@@ -428,7 +428,7 @@ export default function DonationCertificateForm({
                             </label>
 
                             <label className={styles.uploadBtn}>
-                                🖼 Select from Gallery
+                                Select from Gallery
                                 <input
                                     type="file"
                                     accept="image/*"
