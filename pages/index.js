@@ -117,7 +117,7 @@ export default function Home() {
             right: 30,
             zIndex: 500,
             padding: '12px 18px',
-            background: '#000',
+            background: '#d27a07',
             color: '#fff',
             border: 'none',
             borderRadius: '8px',
