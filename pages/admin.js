@@ -587,10 +587,47 @@ function AllDonors({ adminKey, showToast }) {
                   <td style={c.td}><span style={d.available ? c.badgeGreen : c.badgeGray}>{d.available ? 'Yes' : 'No'}</span></td>
                   <td style={c.td}>
                     <div className="uk-donor-actions">
-                      <button style={c.btnSmGold} onClick={() => setEditDonor(d)} title="Edit">✎</button>
-                      <button style={d.available ? c.btnSmGray : c.btnSmGreen} onClick={() => toggleField(d, 'available')} title="Toggle availability">{d.available ? '⏸' : '▶'}</button>
-                      <button style={d.verified ? c.btnSmGray : c.btnSmGreen} onClick={() => toggleField(d, 'verified')} title={d.verified ? 'Unpublish' : 'Publish'}>{d.verified ? '👁' : '✓'}</button>
-                      <button style={c.btnSmRed} onClick={() => remove(d)} title="Delete">✕</button>
+                      {/* Update / Edit */}
+                      <button
+                        style={{
+                          ...c.btnSmGold,
+                          padding: '6px 14px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 4
+                        }}
+                        onClick={() => setEditDonor(d)}
+                        title="Update Donor"
+                      >
+                        ✎ Update
+                      </button>
+
+                      {/* Availability Toggle */}
+                      <button
+                        style={d.available ? c.btnSmGray : c.btnSmGreen}
+                        onClick={() => toggleField(d, 'available')}
+                        title="Toggle availability"
+                      >
+                        {d.available ? '⏸ Pause' : '▶ Active'}
+                      </button>
+
+                      {/* Verification Toggle */}
+                      <button
+                        style={d.verified ? c.btnSmGray : c.btnSmGreen}
+                        onClick={() => toggleField(d, 'verified')}
+                        title={d.verified ? 'Unpublish' : 'Publish'}
+                      >
+                        {d.verified ? '👁 Published' : '✓ Publish'}
+                      </button>
+
+                      {/* Delete */}
+                      <button
+                        style={c.btnSmRed}
+                        onClick={() => remove(d)}
+                        title="Delete"
+                      >
+                        ✕ Delete
+                      </button>
                     </div>
                   </td>
                 </tr>

@@ -106,7 +106,7 @@ export default function BloodDonation() {
       <div className={styles.statsBar}>
         {[
           { num: stats.total, label: 'Total Donors' },
-          { num: stats.available, label: 'Available Now' },
+          { num: stats.available, label: 'Eligible Now' },
           { num: stats.groups, label: 'Blood Groups' },
           { num: stats.universal, label: 'Universal Types' },
         ].map(s => (

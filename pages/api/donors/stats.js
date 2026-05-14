@@ -12,12 +12,32 @@ export default async function handler(req, res) {
         verified: true,
       });
 
-      // Donors eligible to donate now
-      const available = await Donor.countDocuments({
+      // 4 months back date
+      const fourMonthsAgo = new Date();
+      fourMonthsAgo.setMonth(fourMonthsAgo.getMonth() - 4);
+
+      // Get all verified donors
+      const donors = await Donor.find({
         verified: true,
-        canDonate: true, // better field name
+        canDonate: true,
         blocked: { $ne: true },
       });
+
+      // Filter eligible donors
+      const available = donors.filter((donor) => {
+
+        // Never donated
+        if (!donor.lastDonation) return true;
+
+        const lastDonationDate = new Date(donor.lastDonation);
+
+        // Invalid date safeguard
+        if (isNaN(lastDonationDate.getTime())) return true;
+
+        // Eligible after 4 months
+        return lastDonationDate <= fourMonthsAgo;
+
+      }).length;
 
       // Blood groups
       const groups = await Donor.distinct(
@@ -42,6 +62,8 @@ export default async function handler(req, res) {
       });
 
     } catch (err) {
+      console.log(err);
+
       return res.status(500).json({
         success: false,
       });
