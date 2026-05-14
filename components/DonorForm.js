@@ -96,7 +96,7 @@ export default function DonorForm({ onSuccess }) {
           </div>
         </div>
         <div className={styles.group}>
-          <label>Location / Area in Kettinakam *</label>
+          <label>Location / Area in Kannur District *</label>
           <input value={form.location} onChange={set('location')} placeholder="Your ward, street or area" />
         </div>
         <div className={styles.group}>
